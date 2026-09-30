@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Presensi Kelas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section id="auth">
+  <form id="loginForm" class="auth-card" novalidate>
+  <div class="brand" style="margin-bottom:18px"><i class="fa-solid fa-qrcode"></i>Presensi Kelas</div>
+
+    <label for="lu">Nama pengguna</label><input id="lu" autocomplete="username" placeholder="nama pengguna">
+    <label for="lp">Kata sandi</label><input id="lp" type="password" autocomplete="current-password" placeholder="••••••••">
+    <p id="lerr" role="alert"></p>
+    <button class="btn pri" type="submit" id="lBtn">Lanjut</button>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <nav class="nav">
+    <div class="brand"><i class="fa-solid fa-qrcode"></i><span>Presensi</span></div>
+    <button data-v="home" class="on"><i class="fa-solid fa-house"></i><span>Beranda</span></button>
+    <button data-v="scan"><i class="fa-solid fa-expand"></i><span>Scan</span></button>
+    <button data-v="students"><i class="fa-solid fa-users"></i><span>Mahasiswa</span></button>
+    <button data-v="history"><i class="fa-solid fa-calendar-check"></i><span>Riwayat</span></button>
+    <button data-v="settings"><i class="fa-solid fa-sliders"></i><span>Atur</span></button>
+  </nav>
+
+  <div class="wrap">
+    <header class="top">
+      <div><h1 id="hi">Halo</h1><p id="today"></p></div>
+      <div class="tools">
+        <span class="conn"><i id="dot"></i><span id="conn">Cek…</span></span>
+        <button class="ib" id="kBtn" title="Cari cepat (Ctrl+K)"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="ib" id="themeBtn" title="Ganti tema"><i class="fa-solid fa-circle-half-stroke"></i></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="view on" id="v-home">
+        <div class="card stage">
+          <div class="ring big" id="hRing"><b id="hPct">0%</b><span>hadir</span></div>
+          <div class="stage-info">
+            <h2><span id="hHadir">0</span> dari <span id="hTotal">0</span> mahasiswa sudah masuk</h2>
+            <p id="hLate"></p>
+            <div class="row"><button class="btn pri" data-go="scan"><i class="fa-solid fa-expand"></i>Mulai scan</button><button class="btn" id="copyBtn"><i class="fa-regular fa-copy"></i>Salin rekap</button></div>
+          </div>
+        </div>
+        <div class="card sesi"><div><h3>Presensi mandiri</h3><p id="sesiTxt">Sesi belum dibuka. Buka supaya mahasiswa bisa absen dari HP mereka.</p></div><div class="kode" id="kode" hidden></div><div class="row"><button class="btn pri" id="sesiBtn">Buka sesi</button><button class="btn" id="linkBtn"><i class="fa-regular fa-copy"></i>Salin tautan</button></div></div>
+        <div class="grid2">
+          <div class="card"><h3>7 hari terakhir</h3><div class="bars" id="bars"></div></div>
+          <div class="card"><h3>Belum hadir</h3><div class="chips" id="absent"></div></div>
+        </div>
+        <div class="card"><h3>Baru masuk</h3><div class="list" id="recent"></div></div>
+      </section>
+
+      <section class="view" id="v-scan">
+        <div class="scan">
+          <div id="reader"></div>
+          <div class="frame"><i></i><i></i><i></i><i></i></div>
+          <div id="res"><b id="resT"></b><span id="resS"></span></div>
+          <div class="tally"><b id="sHadir">0</b>/<span id="sTotal">0</span></div>
+        </div>
+        <div class="row ctrl"><button class="btn pri" id="scanBtn">Mulai scan</button><button class="ib" id="torchBtn" title="Senter"><i class="fa-solid fa-bolt"></i></button></div>
+        <p class="hint">Scan berjalan terus. Tidak perlu menekan tombol lagi setiap mahasiswa.</p>
+        <div class="card"><h3>Terakhir masuk</h3><div class="list" id="scanList"></div></div>
+      </section>
+
+      <section class="view" id="v-students">
+        <div class="bar"><div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" placeholder="Cari nama atau NPM"></div></div>
+        <div class="seg" id="seg"><button data-f="all" class="on">Semua</button><button data-f="in">Hadir</button><button data-f="out">Belum</button></div>
+        <div class="card"><div class="list" id="stuList"></div></div>
+      </section>
+
+      <section class="view" id="v-history">
+        <div class="bar"><input type="date" id="hDate"><button class="btn" id="csvBtn"><i class="fa-solid fa-file-arrow-down"></i>CSV</button></div>
+        <div class="grid3"><div class="card num"><b id="xHadir">0</b>Tepat waktu</div><div class="card num"><b id="xLate">0</b>Terlambat</div><div class="card num"><b id="xAbsen">0</b>Tidak hadir</div></div>
+        <div class="card"><div class="list" id="hisList"></div></div>
+      </section>
+
+      <section class="view" id="v-settings">
+        <div class="card set">
+          <h3>Jam kelas</h3>
+          <label>Kelas mulai<input type="time" id="cStart"></label>
+          <label>Toleransi (menit)<input type="number" id="cGrace" min="0" max="60"></label>
+          <p class="hint">Mahasiswa yang scan setelah jam mulai + toleransi otomatis tercatat Terlambat.</p>
+        </div>
+        <div class="card set">
+          <h3>Preferensi</h3>
+          <label class="sw">Suara &amp; getar saat scan<input type="checkbox" id="cSound"></label>
+        </div>
+        <div class="card set">
+          <h3>Data</h3>
+          <button class="btn" id="syncBtn"><i class="fa-solid fa-rotate"></i>Sinkronkan mahasiswa</button>
+          <a class="btn" id="sheetLink" target="_blank" rel="noopener"><i class="fa-solid fa-table"></i>Buka Google Sheets</a>
+          <button class="btn danger" id="clearBtn"><i class="fa-solid fa-trash-can"></i>Hapus presensi lokal hari ini</button>
+        </div>
+        <button class="btn danger ghost" id="outBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i>Keluar</button>
+      </section>
+    </main>
+  </div>
+</div>
+
+<dialog id="sheet">
+  <div class="sh-head"><div class="av lg" id="shAv"></div><div><h2 id="shName"></h2><p id="shMeta"></p></div><button class="ib" id="shX" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button></div>
+  <img id="shQr" alt="QR mahasiswa" width="200" height="200">
+  <p id="shStat" class="hint"></p>
+  <div class="row"><button class="btn pri" id="shMark"></button><button class="btn" id="shDl"><i class="fa-solid fa-download"></i>Unduh QR</button></div>
+</dialog>
+
+<dialog id="cmd"><input id="cmdIn" placeholder="Ketik nama, NPM, atau menu…"><div class="list" id="cmdList"></div></dialog>
+<div id="toasts"></div>
+<script src="script.js"></script>
+</body>
+</html>

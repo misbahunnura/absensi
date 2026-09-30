@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Absen Kelas</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1b1250;--card:rgba(255,255,255,.62);--line:#fff;--pink:#ff5fc8;--cyan:#3fe3ff;--lime:#c6ff3d;--violet:#8a5cff;--bg1:#e6d9ff;--bg2:#bff3ff;--bg3:#ffd3f1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#f1ebff;--card:rgba(40,25,90,.6);--line:#b9a2ff;--bg1:#1d1050;--bg2:#0e2a52;--bg3:#3a1050}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;font-family:Fredoka,system-ui,sans-serif;color:var(--ink);background:linear-gradient(135deg,var(--bg1),var(--bg2) 50%,var(--bg3));background-attachment:fixed}
+.wrap{max-width:460px;margin:0 auto;padding:18px 14px 40px;display:grid;gap:14px}
+h1{font-size:30px;margin:0;line-height:1.05}
+h2{font-size:17px;margin:0 0 8px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.pix{font-family:VT323,monospace;font-size:20px;letter-spacing:.5px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:26px;padding:16px;backdrop-filter:blur(10px);box-shadow:inset 0 2px 0 rgba(255,255,255,.7),0 8px 22px rgba(138,92,255,.25)}
+.holo{background:linear-gradient(120deg,#ff9fe5,#9fe9ff,#e6ff9f,#d2b8ff,#ff9fe5);background-size:300% 300%;animation:sh 7s linear infinite;color:#1b1250;border-color:#fff}
+@keyframes sh{to{background-position:300% 0}}
+@media (prefers-reduced-motion:reduce){.holo{animation:none}}
+.nim{font-family:VT323,monospace;font-size:44px;line-height:1;margin:4px 0;word-break:break-all}
+.row{display:flex;gap:12px;align-items:center;justify-content:space-between}
+input{width:100%;font:inherit;padding:11px 16px;border-radius:999px;border:2px solid var(--line);background:rgba(255,255,255,.8);color:#1b1250;margin:4px 0 10px}
+input:focus-visible,button:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+#kode{font-family:VT323,monospace;font-size:28px;letter-spacing:.3em;text-align:center;padding:4px 16px}
+button{font:inherit;font-weight:700;border:2px solid #fff;border-radius:999px;padding:12px 20px;color:#1b1250;cursor:pointer;background:linear-gradient(180deg,#fff 0%,var(--cyan) 48%,#7fb8ff 52%,var(--cyan) 100%);box-shadow:0 4px 0 #5b3cc4,0 8px 14px rgba(0,0,0,.18)}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #5b3cc4}
+button.go{background:linear-gradient(180deg,#fff 0%,var(--lime) 48%,#9be21f 52%,var(--lime) 100%);width:100%;font-size:18px}
+button.dl{width:100%;margin-top:12px;padding:9px 16px;font-size:15px}
+button[disabled]{filter:grayscale(1);opacity:.6;cursor:not-allowed}
+.qr{background:#fff;border-radius:18px;padding:8px;border:2px solid #fff;flex:none}
+.qr img{display:none;width:118px;height:118px}.qr.ok img{display:block}
+.qr p{margin:0;width:118px;height:118px;display:grid;place-items:center;text-align:center;font-size:12px;color:#6b5a9e}.qr.ok p{display:none}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:600;background:var(--pink);color:#fff;font-size:14px}
+.badge.on{background:#1fbf75}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}dt{opacity:.7}dd{margin:0;font-weight:600;text-align:right;word-break:break-word}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stat{border-radius:18px;padding:10px 4px;background:rgba(255,255,255,.55);border:2px solid var(--line)}
+:root[data-theme="dark"] .stat,:root[data-theme="dark"] li{background:rgba(255,255,255,.1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stat,:root:not([data-theme="light"]) li{background:rgba(255,255,255,.1)}}
+.stat b{display:block;font-family:VT323,monospace;font-size:34px;line-height:1}
+.stat span{font-size:13px}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+li{display:flex;justify-content:space-between;gap:8px;padding:10px 14px;border-radius:16px;background:rgba(255,255,255,.55);border:2px solid var(--line)}
+li b{font-family:VT323,monospace;font-size:22px;line-height:1}
+.toast{margin-top:10px;text-align:center;font-weight:600;min-height:22px}
+.toast small{display:block;font-weight:400;opacity:.75}
+.toast.bad{color:#c81e5a}.toast.late{color:#a15a00}
+:root[data-theme="dark"] .toast.bad{color:#ff7aa8}
+.empty{opacity:.7;font-size:14px}
+label{font-size:14px;font-weight:600}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><h1 id="hi">Hai! ✦</h1><span class="pix">★ RPL · Semester 5</span></div>
+
+  <section class="card holo" aria-label="Kartu mahasiswa">
+    <div class="row">
+      <div style="min-width:0">
+        <div class="pix">NPM kamu</div>
+        <div class="nim" id="cNim">- - -</div>
+        <div id="cNama">Isi NPM di bawah</div>
+        <div id="cJur" style="opacity:.75;font-size:14px"></div>
+      </div>
+      <div class="qr" id="qbox"><img id="qImg" alt="QR presensi kamu"><p>QR muncul setelah isi NPM</p></div>
+    </div>
+    <button class="dl" id="qDl" type="button" disabled>Unduh QR</button>
+  </section>
+
+  <section class="card">
+    <div class="row"><h2 style="margin:0">Absen mandiri</h2><span id="st" class="badge">Mengecek…</span></div>
+    <div style="height:8px"></div>
+    <label for="nim">Isi NPM dulu</label>
+    <input id="nim" inputmode="numeric" placeholder="Masukkan NPM kamu" autocomplete="off">
+    <label for="kode">Kode kelas (minta ke dosen)</label>
+    <input id="kode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••">
+    <button id="go" class="go" type="button">Absen sekarang</button>
+    <div id="toast" class="toast" role="status"></div>
+  </section>
+
+  <section class="card">
+    <h2>Statistik kehadiran</h2>
+    <div class="stats">
+      <div class="stat"><b id="sH">-</b><span>Hadir</span></div>
+      <div class="stat"><b id="sT">-</b><span>Terlambat</span></div>
+      <div class="stat"><b id="sP">-</b><span>Persentase</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Data diri</h2>
+    <dl><dt>Nama</dt><dd id="dN">-</dd><dt>NPM</dt><dd id="dI">-</dd><dt>Kelas</dt><dd id="dK">-</dd><dt>Jurusan</dt><dd id="dJ">-</dd></dl>
+  </section>
+
+</main>
+<script>
+const API='https://script.google.com/macros/s/AKfycbwlgWApIgKIRvXAq2aH0cw8GSwfJuNcV48gfGZzJpziyS7lJorxhbuAb3_TjN5Lg9_K/exec';
+const $=s=>document.querySelector(s);
+let NPM='',tm;
+async function status(){
+  try{const d=await(await fetch(API+'?action=sesi_status')).json();
+    $('#st').classList.toggle('on',!!d.open);$('#st').textContent=d.open?'Sesi terbuka':'Sesi tertutup'}
+  catch{$('#st').textContent='Tidak terhubung'}
+}
+function say(cls,t,s){const o=$('#toast');o.className='toast '+cls;o.innerHTML=t+(s?'<small></small>':'');if(s)o.querySelector('small').textContent=s}
+function isiData(d){
+  if(d.nama){
+  const nama=d.nama.trim().replace(/\s+/g,' ');
+  $('#dN').textContent=nama;
+  $('#cNama').textContent=nama;
+  $('#hi').textContent='Hai, '+nama.split(' ')[0]+'! ✦';
+}
+  if(d.kelas)$('#dK').textContent=d.kelas;
+  if(d.jurusan){$('#dJ').textContent=d.jurusan;$('#cJur').textContent=d.jurusan}
+  if(typeof d.persen==='number'){$('#sP').textContent=d.persen+'%';$('#sH').textContent=d.hadir??'-';$('#sT').textContent=d.terlambat??'-'}
+}
+function reset(){
+  ['#dN','#dK','#dJ','#dI','#sH','#sT','#sP'].forEach(x=>$(x).textContent='-');
+  $('#cNim').textContent='- - -';$('#cNama').textContent='Isi NPM di bawah';$('#cJur').textContent='';$('#hi').textContent='Hai! ✦';
+  $('#qbox').classList.remove('ok');$('#qImg').removeAttribute('src');$('#qDl').disabled=true;
+}
+async function pakaiNim(nim){
+  NPM=nim;localStorage.setItem('mhs_nim',nim);
+  $('#cNim').textContent=nim;$('#dI').textContent=nim;
+  $('#qImg').src='https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=4&data='+encodeURIComponent(JSON.stringify({nim}));
+  $('#qbox').classList.add('ok');$('#qDl').disabled=false;$('#qDl').dataset.nim=nim;
+
+  let cache=null;
+  try{cache=JSON.parse(localStorage.getItem('mhs_data_'+nim))}catch{}
+  if(cache)isiData(cache);else $('#cNama').textContent='Memuat data…';
+
+  try{
+    const d=await(await fetch(API+'?action=mhs_info&nim='+encodeURIComponent(nim))).json();
+    if(!d.error&&nim===NPM){isiData(d);localStorage.setItem('mhs_data_'+nim,JSON.stringify(d))}
+    else if(!cache&&nim===NPM)$('#cNama').textContent='NPM tidak ditemukan';
+  }catch{
+    if(!cache&&nim===NPM)$('#cNama').textContent='Gagal memuat, coba lagi';
+  }
+}
+$('#nim').addEventListener('input',()=>{
+  clearTimeout(tm);const v=$('#nim').value.trim();
+  if(!v){NPM='';reset();return}
+  tm=setTimeout(()=>pakaiNim(v),600);
+});
+$('#qDl').addEventListener('click',async e=>{
+  const nim=e.currentTarget.dataset.nim,src=$('#qImg').src;
+  try{const r=await fetch(src),u=URL.createObjectURL(await r.blob()),a=Object.assign(document.createElement('a'),{href:u,download:`qr-${nim}.png`});a.click();URL.revokeObjectURL(u)}
+  catch{window.open(src,'_blank')}
+});
+$('#go').addEventListener('click',async()=>{
+  const nim=$('#nim').value.trim(),kode=$('#kode').value.trim(),b=$('#go');
+  if(!nim)return say('bad','Isi NPM dulu.');
+  if(kode.length<6)return say('bad','Belum lengkap','Isi 6 angka kode kelas.');
+  if(nim!==NPM)await pakaiNim(nim);
+  b.disabled=true;b.textContent='Mencatat…';
+  try{
+    const d=await(await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'presensi_mandiri',nim,kode})})).json();
+    if(!d.ok)say('bad','Belum tercatat',d.pesan||'Coba lagi.');
+    else if(d.duplikat){isiData(d);say('','Kamu sudah presensi hari ini ✓','Tidak perlu absen lagi.')}
+    else{isiData(d);$('#kode').value='';say(d.status==='Terlambat'?'late':'','Tercatat, '+d.nama+' ✓',d.status==='Terlambat'?'Terlambat · pukul '+d.waktu:'Hadir tepat waktu · pukul '+d.waktu)}
+  }catch{say('bad','Tidak bisa menghubungi server','Cek koneksi internetmu lalu coba lagi.')}
+  b.disabled=false;b.textContent='Absen sekarang';
+});
+const saved=localStorage.getItem('mhs_nim');if(saved){$('#nim').value=saved;pakaiNim(saved)}
+status();setInterval(status,20000);
+</script>
+</body>
+</html>
